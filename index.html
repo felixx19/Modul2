@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ringkasan Materi Pemrograman Web (Pertemuan 1 - 21)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        hacker: {
+                            bg: '#0a0a0c',
+                            card: '#121318',
+                            border: '#1f293d',
+                            green: '#00ff66',
+                            cyan: '#00f0ff',
+                            text: '#c9d1d9'
+                        }
+                    },
+                    fontFamily: {
+                        mono: ['Courier New', 'Courier', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- React & Babel CDN -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { background-color: #0a0a0c; color: #c9d1d9; font-family: 'Courier New', Courier, monospace; }
+        .glow-text { text-shadow: 0 0 10px rgba(0, 255, 102, 0.5); }
+        .glow-box { box-shadow: 0 0 15px rgba(0, 240, 255, 0.1); }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0a0c; }
+        ::-webkit-scrollbar-thumb { background: #1f293d; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00ff66; }
+    </style>
+</head>
+<body class="min-h-screen bg-hacker-bg text-hacker-text selection:bg-green-500 selection:text-black">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function App() {
+            const [activeTab, setActiveTab] = useState('home');
+            const [copiedIndex, setCopiedIndex] = useState(null);
+            const [simInput, setSimInput] = useState({ name: 'Herlian Dwi Prianka', score: '85', choice: 'Jakarta' });
+            const [simResult, setSimResult] = useState({});
+            const [currentTime, setCurrentTime] = useState(new Date());
+            const [marqueeSpeed, setMarqueeSpeed] = useState(5);
+
+            useEffect(() => {
+                const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+                return () => clearInterval(timer);
+            }, []);
+
+            // Data Materi 1 - 21 yang dikelompokkan per blok
+            const materialGroups = [
+                {
+                    group: "Pertemuan 1 - 5: Konsep Dasar, HTML, PHP Dasar & Operator",
+                    items: [
+                        {
+                            id: 1,
+                            title: "Pertemuan 1: Konsep Dasar Pemrograman Web",
+                            desc: "Mempelajari pengertian website (statis, dinamis, interaktif), istilah dasar internet, WWW, web server (Apache/XAMPP), URL, DNS, protokol HTTP, serta struktur navigasi (Linier, Hirarki, Non-Linier, Campuran).",
+                            code: `<!-- Contoh Struktur Navigasi Hirarki Konseptual -->\n<div class="master-page">\n  <h1>Menu Utama</h1>\n  <nav>\n    <a href="tentang.html">Tentang</a>\n    <a href="mulai.html">Mulai</a>\n    <a href="keluar.html">Keluar</a>\n  </nav>\n</div>`,
+                            simulationType: "html"
+                        },
+                        {
+                            id: 2,
+                            title: "Pertemuan 2: Pengenalan HTML & Tabel",
+                            desc: "Mengenal struktur dasar dokumen HTML (<HTML>, <HEAD>, <TITLE>, <BODY>), penggunaan berbagai format tag teks, heading, paragraf, pembuatan tabel dengan <tr>, <td>, <th>, serta pengaturan rowspan, colspan, cellpadding, dan cellspacing.",
+                            code: `<!DOCTYPE html>\n<html>\n<head>\n    <title>Contoh Tabel HTML</title>\n</head>\n<body>\n    <table border="1" cellpadding="5" cellspacing="0">\n        <tr>\n            <th>NIM</th>\n            <th>Nama</th>\n        </tr>\n        <tr>\n            <td>251091700200</td>\n            <td>Herlian Dwi Prianka</td>\n        </tr>\n    </table>\n<\/body>\n</html>`,
+                            simulationType: "html"
+                        },
+                        {
+                            id: 3,
+                            title: "Pertemuan 3: PHP Dasar & Variabel",
+                            desc: "Pengenalan PHP (PHP Hypertext Preprocessor) sebagai bahasa server-side. Mempelajari jenis tag standar (<?php ... ?>), perintah cetak (echo), deklarasi variabel dengan tanda ($), tipe data dasar, konstanta (define), dan komentar.",
+                            code: `<?php\n// Mendefinisikan konstanta dan variabel\ndefine("INSTANSI", "Universitas Pamulang Serang");\n$nim = "251091700200";\n$nama = "Herlian Dwi Prianka";\n\necho "Instansi: " . INSTANSI . "<br>";\necho "NIM: $nim<br>";\necho "Nama: $nama<br>";\n?>`,
+                            simulationType: "php"
+                        },
+                        {
+                            id: 4,
+                            title: "Pertemuan 4: Operator PHP",
+                            desc: "Penggunaan berbagai operator dalam PHP meliputi Operator Aritmatika (+, -, *, /, %, ++, --), Operator Perbandingan (==, !=, >, <, >=, <=), Operator Logika (AND, OR, NOT), dan Operator String (titik .).",
+                            code: `<?php\n$sisi = 15;\n$teks1 = "Volume";\n$teks2 = "Kubus";\n$volume = $sisi * $sisi * $sisi;\n\necho "$teks1 $teks2 = $volume cm3";\n?>`,
+                            simulationType: "php"
+                        },
+                        {
+                            id: 5,
+                            title: "Pertemuan 5: Form Handling (GET & POST) & HTTP Server",
+                            desc: "Mempelajari cara menangani data inputan formulir HTML menggunakan metode GET (data dikirim via URL) dan metode POST (data tersembunyi), serta pemrosesan data form mandiri dengan $_SERVER['PHP_SELF'].",
+                            code: `<form action="" method="post">\n    Nama: <input type="text" name="nama"><br>\n    <input type="submit" value="Kirim">\n</form>\n<?php\nif(isset($_POST['nama'])) {\n    echo "Halo, " . $_POST['nama'] . "!";\n}\n?>`,
+                            simulationType: "php"
+                        }
+                    ]
+                },
+                {
+                    group: "Pertemuan 6 - 10: Percabangan PHP/JS, Perulangan, JS Dasar & Responsive CSS",
+                    items: [
+                        {
+                            id: 6,
+                            title: "Pertemuan 6: Percabangan (If-Else & Switch) PHP & JS",
+                            desc: "Mengatur alur program menggunakan percabangan kondisional if tunggal, if-else, if majemuk (elseif), dan switch case untuk pengambilan keputusan logika baik di sisi server (PHP) maupun client (JavaScript).",
+                            code: `<?php\n$nilai = 88;\nif ($nilai >= 85) {\n    $grade = "A";\n} elseif ($nilai >= 75) {\n    $grade = "B";\n} else {\n    $grade = "C";\n}\necho "Nilai Anda: $nilai, Grade: $grade";\n?>`,
+                            simulationType: "php"
+                        },
+                        {
+                            id: 7,
+                            title: "Pertemuan 7: Perulangan (Looping) di PHP",
+                            desc: "Mengimplementasikan struktur perulangan untuk tugas berulang secara otomatis menggunakan perulangan for, while, do-while, serta perulangan foreach untuk memecah dan membaca isi array.",
+                            code: `<?php\nfor($i = 1; $i <= 5; $i++) {\n    echo "Baris ke-$i<br>";\n}\n\n$bahasa = array('HTML', 'CSS', 'JavaScript', 'PHP');\nforeach($bahasa as $lang) {\n    echo "Belajar: $lang<br>";\n}\n?>`,
+                            simulationType: "php"
+                        },
+                        {
+                            id: 8,
+                            title: "Pertemuan 8: Dasar JavaScript & Script Samping Client",
+                            desc: "Mengenal dasar JavaScript, cara penyisipan skrip (inline, internal head/body, dan external file .js), serta penulisan fungsi dasar dengan atau tanpa argumen untuk interaksi browser.",
+                            code: `<script>\nfunction sapa(nama) {\n    alert("Selamat datang, " + nama + "!");\n}\n<\/script>\n<button onclick="sapa('Herlian')">Klik Saya</button>`,
+                            simulationType: "js"
+                        },
+                        {
+                            id: 9,
+                            title: "Pertemuan 9: CSS Dasar, Selector, Box Model, & Pseudo-class",
+                            desc: "Mempelajari penataan gaya web menggunakan Cascading Style Sheets (CSS) melalui Internal, External, dan Inline. Memahami selector ID (#), Class (.), tag, pseudo-class (:hover, :active), serta Box Model (Margin, Border, Padding).",
+                            code: `<style>\n  .box {\n    background-color: #1f293d;\n    padding: 20px;\n    border: 2px solid #00ff66;\n    margin: 10px;\n    border-radius: 8px;\n  }\n</style>\n<div class="box">Kotak Bergaya Hacker</div>`,
+                            simulationType: "html"
+                        },
+                        {
+                            id: 10,
+                            title: "Pertemuan 10: Membuat Desain Web Responsif dengan Media Queries",
+                            desc: "Menerapkan pendekatan Responsive Web Design agar tampilan optimal di berbagai perangkat (desktop, tablet, mobile) menggunakan teknik CSS Flexbox/Grid dan @media screen rules.",
+                            code: `<style>\n  .container { display: flex; flex-wrap: wrap; }\n  .col { flex: 1; min-width: 250px; background: #121318; padding: 15px; margin: 5px; }\n  @media (max-width: 768px) {\n    .container { flex-direction: column; }\n  }\n</style>\n<div class=\"container\">\n  <div class=\"col\">Kolom 1</div>\n  <div class=\"col\">Kolom 2</div>\n</div>`,
+                            simulationType: "html"
+                        }
+                    ]
+                },
+                {
+                    group: "Pertemuan 11 - 15: JavaScript Lanjutan, Objek Built-in, JSP & Event Handling",
+                    items: [
+                        {
+                            id: 11,
+                            title: "Pertemuan 11: JavaScript Dasar Lanjutan, Variabel, & Fungsi",
+                            desc: "Pendalaman lanjutan operator aritmatika, penunjukan, perbandingan, logika dalam JavaScript, serta pembuatan fungsi modular dengan argumen dan nilai balik (return value).",
+                            code: `<script>\nfunction hitungLuasPersegi(sisi) {\n    return sisi * sisi;\n}\ndocument.write("Luas Persegi (sisi 12) = " + hitungLuasPersegi(12));\n<\/script>`,
+                            simulationType: "js"
+                        },
+                        {
+                            id: 12,
+                            title: "Pertemuan 12: Objek JavaScript (Array, Date, & Math)",
+                            desc: "Memanfaatkan objek bawaan JavaScript seperti Array object, Date object untuk manipulasi waktu/kalender, serta Math object (max, pow, random, sqrt) untuk perhitungan matematis kompleks.",
+                            code: `<script>\nlet d = new Date();\nlet hariList = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];\nlet hariIni = hariList[d.getDay()];\ndocument.write("Hari ini adalah: " + hariIni + "<br>");\ndocument.write("Nilai Acak Math.random: " + Math.floor(Math.random() * 100));\n<\/script>`,
+                            simulationType: "js"
+                        },
+                        {
+                            id: 13,
+                            title: "Pertemuan 13: Objek String, Document, & Window",
+                            desc: "Manipulasi string (length, substring, toUpperCase, indexOf), pengelolaan objek document (bgColor, fgColor, write), serta objek window (alert, confirm, prompt, open, location.href).",
+                            code: `<script>\nlet teks = \"Herlian Dwi Prianka\";\ndocument.write(\"Teks Asli: \" + teks + \"<br>\");\ndocument.write(\"Huruf Besar: \" + teks.toUpperCase() + \"<br>\");\ndocument.write(\"Jumlah Karakter: \" + teks.length);\n<\/script>`,
+                            simulationType: "js"
+                        },
+                        {
+                            id: 14,
+                            title: "Pertemuan 14: Dasar-dasar JSP (Java Server Pages) & Arsitektur",
+                            desc: "Mengenal teknologi Java Server Pages (JSP) yang menyisipkan sintak Java di dalam HTML, arsitektur berbasis web container (Apache Tomcat), deklarasi variabel JSP (<%! %>), ekspresi (<%= %>), komentar, directves, dan actions (<jsp:include>, <jsp:forward>).",
+                            code: `<!-- Contoh Sintak JSP Dasar -->\n<%!\n  int counter = 100;\n%>\n<html>\n<body>\n  <h2>Waktu Server: <%= new java.util.Date() %></h2>\n  <p>Nilai Counter: <%= counter %></p>\n<\/body>\n</html>`,
+                            simulationType: "html"
+                        },
+                        {
+                            id: 15,
+                            title: "Pertemuan 15: Penanganan Kejadian (Event Handling di JavaScript)",
+                            desc: "Menangani berbagai event interaktif pada elemen HTML seperti onclick, onchange, onblur, onfocus, onload, onunload, onmouseover, dan onmouseout untuk validasi form dan efek dinamis.",
+                            code: `<input type="text" id="inputNama" onfocus="this.style.background='#00ff66'; this.style.color='#000';" onblur="this.style.background='#121318'; this.style.color='#fff';" placeholder="Klik untuk fokus...">`,
+                            simulationType: "html"
+                        }
+                    ]
+                },
+                {
+                    group: "Pertemuan 16 - 21: Objek Lanjutan JS, Advanced CSS, Marquee, Frame, & Java Web Framework",
+                    items: [
+                        {
+                            id: 16,
+                            title: "Pertemuan 16: JavaScript: Objek String, Date, & Array Lanjutan",
+                            desc: "Eksplorasi mendalam metode lanjutan pada objek string (match, replace, slice, split), manajemen date lengkap (UTC methods, setFullYear), serta pengurutan dan manipulasi array (concat, join, reverse, sort).",
+                            code: `<script>\nlet buah = [\"Apel\", \"Mangga\", \"Jeruk\", \"Pisang\"];\nbuah.sort();\ndocument.write(\"Buah berurutan: \" + buah.join(\", \"));\n<\/script>`,
+                            simulationType: "js"
+                        },
+                        {
+                            id: 17,
+                            title: "Pertemuan 17: Case Style Sheet Lanjutan & Efek Visual",
+                            desc: "Penerapan lanjutan CSS untuk latar belakang bergambar, manajemen font (small-caps, weight), border berlapis, pengaturan z-index untuk tumpukan elemen (layer), serta pseudo-class interaktif pada link.",
+                            code: `<style>\n  .layered-box {\n    position: relative;\n    background: linear-gradient(45deg, #0a0a0c, #1f293d);\n    border: 2px dashed #00f0ff;\n    padding: 20px;\n    color: #00ff66;\n  }\n</style>\n<div class=\"layered-box\">Box Efek Cyberpunk CSS</div>`,
+                            simulationType: "html"
+                        },
+                        {
+                            id: 18,
+                            title: "Pertemuan 18: Objek JavaScript Lanjutan & Pemecahan Masalah Matematis",
+                            desc: "Implementasi lanjutan objek JavaScript untuk studi kasus perhitungan rumus matematis, pembuatan fungsi logika waktu, dan penyelesaian persamaan kuadrat atau kalkulator fungsional di browser.",
+                            code: `<script>\n// Mencari nilai akar kuadrat (sqrt)\nlet a = 25;\ndocument.write(\"Akar dari \" + a + \" adalah \" + Math.sqrt(a));\n<\/script>`,
+                            simulationType: "js"
+                        },
+                        {
+                            id: 19,
+                            title: "Pertemuan 19: Membuat Marquee Dinamis & Frame di Web",
+                            desc: "Pembuatan teks berjalan (marquee) interaktif menggunakan fungsi waktu JavaScript dan window.status, serta pemisahan tata letak halaman web menggunakan <frameset> dan <frame> untuk navigasi menu.",
+                            code: `<!-- Contoh Tag Marquee HTML Standar -->\n<marquee behavior=\"scroll\" direction=\"left\" scrollamount=\"5\" style=\"color: #00ff66; background: #121318; padding: 8px;\">\n  [SYSTEM ALERT]........ALO GAES, INI TEKS BERJALAN BTW :v........\n</marquee>`,
+                            simulationType: "html"
+                        },
+                        {
+                            id: 20,
+                            title: "Pertemuan 20: Pengenalan Java Web Programming, Arsitektur MVC, & Spring",
+                            desc: "Pengantar arsitektur Java Enterprise Edition (J2EE), Web Container (Apache Tomcat), pola desain MVC (Model-View-Controller) yang memisahkan Controller (Servlet), Model (JavaBeans/ORM), dan View (JSP), serta pengenalan Spring Framework.",
+                            code: `// Konsep Dasar Pemanggilan Controller Servlet ke View JSP\n// 1. Request diterima Servlet (Controller)\n// 2. Data diproses melalui Model / DAO\n// 3. Dispatch data ke View (.jsp) menggunakan request.setAttribute()`,
+                            simulationType: "php"
+                        },
+                        {
+                            id: 21,
+                            title: "Pertemuan 21: Konfigurasi WAR Files & Deployment Java Web",
+                            desc: "Mempelajari pengemasan aplikasi web Java ke dalam bentuk file arsip .WAR (Web Archive) beserta file deployment descriptor (web.xml) untuk di-deploy ke server aplikasi produksi.",
+                            code: `<!-- Contoh Struktur Dasar web.xml (Deployment Descriptor) -->\n<web-app>\n    <servlet>\n        <servlet-name>ActionServlet</servlet-name>\n        <servlet-class>controller.ActionServlet</servlet-class>\n    </servlet>\n    <servlet-mapping>\n        <servlet-name>ActionServlet</servlet-name>\n        <url-pattern>/action/*</url-pattern>\n    </servlet-mapping>\n</web-app>`,
+                            simulationType: "html"
+                        }
+                    ]
+                }
+            ];
+
+            const handleCopy = (code, index) => {
+                navigator.clipboard.writeText(code);
+                setCopiedIndex(index);
+                setTimeout(() => setCopiedIndex(null), 2000);
+            };
+
+            const handleDownload = (pertNum) => {
+                const materialTitle = `Materi_Pertemuan_${pertNum}_Herlian_UNPAM.txt`;
+                const content = `RINGKASAN MATERI PEMROGRAMAN WEB\nUNIVERSITAS PAMULANG SERANG\nNama Pembuat: Herlian Dwi Prianka (NIM: 251091700200)\n---------------------------------------------------\nFile Dokumen / Modul Resmi untuk Pertemuan ${pertNum}.\nSimpan file ini sebagai referensi belajar mandiri.`;
+                
+                const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = materialTitle;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+            };
+
+            const renderSimulation = (item) => {
+                switch (item.id) {
+                    case 1:
+                        return (
+                            <div className="w-full rounded border border-gray-300 bg-white p-4 text-left text-gray-900">
+                                <h3 className="mb-3 text-lg font-bold">Menu Utama</h3>
+                                <nav className="flex flex-wrap gap-3">
+                                    <a className="text-blue-700 underline" href="#tentang">Tentang</a>
+                                    <a className="text-blue-700 underline" href="#mulai">Mulai</a>
+                                    <a className="text-blue-700 underline" href="#keluar">Keluar</a>
+                                </nav>
+                            </div>
+                        );
+                    case 2:
+                        return (
+                            <div className="w-full overflow-x-auto rounded bg-white p-4 text-left text-gray-900">
+                                <table className="w-full border-collapse text-sm">
+                                    <thead>
+                                        <tr>
+                                            <th className="border border-gray-500 p-2">NIM</th>
+                                            <th className="border border-gray-500 p-2">Nama</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td className="border border-gray-500 p-2">251091700200</td>
+                                            <td className="border border-gray-500 p-2">Herlian Dwi Prianka</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        );
+                    case 3:
+                        return (
+                            <div className="w-full rounded bg-gray-900 p-4 text-left font-mono text-sm text-green-400">
+                                <p>Instansi: Universitas Pamulang Serang</p>
+                                <p>NIM: 251091700200</p>
+                                <p>Nama: Herlian Dwi Prianka</p>
+                            </div>
+                        );
+                    case 4:
+                        return (
+                            <div className="w-full rounded bg-gray-900 p-4 text-left font-mono text-sm text-green-400">
+                                Volume Kubus = {15 * 15 * 15} cm3
+                            </div>
+                        );
+                    case 5:
+                        return (
+                            <form
+                                className="w-full space-y-3 rounded bg-white p-4 text-left text-gray-900"
+                                onSubmit={(event) => {
+                                    event.preventDefault();
+                                    setSimResult((previous) => ({ ...previous, 5: `Halo, ${simInput.name}!` }));
+                                }}
+                            >
+                                <label className="block text-sm" htmlFor="simulated-name">Nama:</label>
+                                <input
+                                    id="simulated-name"
+                                    className="w-full rounded border border-gray-400 px-3 py-2"
+                                    value={simInput.name}
+                                    onChange={(event) => setSimInput({ ...simInput, name: event.target.value })}
+                                />
+                                <button className="rounded bg-blue-700 px-3 py-2 text-white" type="submit">Kirim</button>
+                                {simResult[5] && <p className="font-semibold text-green-800" role="status">{simResult[5]}</p>}
+                            </form>
+                        );
+                    case 6: {
+                        const score = 88;
+                        const grade = score >= 85 ? 'A' : score >= 75 ? 'B' : 'C';
+                        return (
+                            <div className="w-full rounded bg-gray-900 p-4 text-left font-mono text-sm text-green-400">
+                                Nilai Anda: {score}, Grade: {grade}
+                            </div>
+                        );
+                    }
+                    case 7:
+                        return (
+                            <div className="w-full rounded bg-gray-900 p-4 text-left font-mono text-sm text-green-400">
+                                {[1, 2, 3, 4, 5].map((number) => <p key={`line-${number}`}>Baris ke-{number}</p>)}
+                                {['HTML', 'CSS', 'JavaScript', 'PHP'].map((language) => <p key={language}>Belajar: {language}</p>)}
+                            </div>
+                        );
+                    case 8:
+                        return (
+                            <div className="w-full rounded bg-white p-4 text-left text-gray-900">
+                                <button
+                                    className="rounded bg-blue-700 px-4 py-2 text-white"
+                                    onClick={() => setSimResult((previous) => ({ ...previous, 8: 'Selamat datang, Herlian!' }))}
+                                >
+                                    Klik Saya
+                                </button>
+                                {simResult[8] && <p className="mt-3 font-semibold text-green-800" role="status">{simResult[8]}</p>}
+                            </div>
+                        );
+                    case 9:
+                        return (
+                            <div className="w-full rounded-lg border-2 border-green-500 bg-hacker-border p-5 text-left text-green-300">
+                                Kotak Bergaya Hacker
+                            </div>
+                        );
+                    case 10:
+                        return (
+                            <div className="flex w-full flex-wrap gap-2 text-left text-white">
+                                <div className="min-w-[150px] flex-1 rounded bg-hacker-card p-4">Kolom 1</div>
+                                <div className="min-w-[150px] flex-1 rounded bg-hacker-card p-4">Kolom 2</div>
+                            </div>
+                        );
+                    case 11:
+                        return (
+                            <div className="w-full rounded bg-gray-900 p-4 text-left font-mono text-sm text-cyan-300">
+                                Luas Persegi (sisi 12) = {12 * 12}
+                            </div>
+                        );
+                    case 12: {
+                        const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+                        return (
+                            <div className="w-full rounded bg-gray-900 p-4 text-left font-mono text-sm text-cyan-300">
+                                <p>Hari ini adalah: {days[new Date().getDay()]}</p>
+                                <p>Nilai Acak Math.random: {Math.floor(Math.random() * 100)}</p>
+                            </div>
+                        );
+                    }
+                    case 13: {
+                        const text = 'Herlian Dwi Prianka';
+                        return (
+                            <div className="w-full rounded bg-gray-900 p-4 text-left font-mono text-sm text-cyan-300">
+                                <p>Teks Asli: {text}</p>
+                                <p>Huruf Besar: {text.toUpperCase()}</p>
+                                <p>Jumlah Karakter: {text.length}</p>
+                            </div>
+                        );
+                    }
+                    case 14:
+                        return (
+                            <div className="w-full rounded bg-white p-4 text-left text-gray-900">
+                                <h3 className="text-lg font-bold">Waktu Server: {currentTime.toLocaleString('id-ID')}</h3>
+                                <p>Nilai Counter: 100</p>
+                                <p className="mt-3 text-xs text-gray-500">Simulasi output JSP (Live Server tidak menjalankan Java/JSP).</p>
+                            </div>
+                        );
+                    case 15:
+                        return (
+                            <div className="w-full rounded bg-white p-4 text-left">
+                                <p className="mb-2 text-sm text-gray-700">Fokuskan input untuk mengubah warnanya:</p>
+                                <input
+                                    className="w-full rounded border border-gray-400 px-3 py-2 text-gray-900"
+                                    onFocus={(event) => {
+                                        event.currentTarget.style.background = '#00ff66';
+                                        event.currentTarget.style.color = '#000';
+                                    }}
+                                    onBlur={(event) => {
+                                        event.currentTarget.style.background = '#121318';
+                                        event.currentTarget.style.color = '#fff';
+                                    }}
+                                    placeholder="Klik untuk fokus..."
+                                />
+                            </div>
+                        );
+                    case 16:
+                        return (
+                            <div className="w-full rounded bg-gray-900 p-4 text-left font-mono text-sm text-cyan-300">
+                                Buah berurutan: {['Apel', 'Mangga', 'Jeruk', 'Pisang'].sort().join(', ')}
+                            </div>
+                        );
+                    case 17:
+                        return (
+                            <div className="w-full rounded border-2 border-dashed border-cyan-400 bg-gradient-to-br from-hacker-bg to-hacker-border p-5 text-left text-green-300">
+                                Box Efek Cyberpunk CSS
+                            </div>
+                        );
+                    case 18:
+                        return (
+                            <div className="w-full rounded bg-gray-900 p-4 text-left font-mono text-sm text-cyan-300">
+                                Akar dari 25 adalah {Math.sqrt(25)}
+                            </div>
+                        );
+                    case 19:
+                        return (
+                            <div className="w-full rounded bg-hacker-card p-3 text-green-300">
+                                <label className="mb-3 flex items-center gap-3 text-left text-xs text-gray-300">
+                                    <span className="shrink-0">Kecepatan: {marqueeSpeed}</span>
+                                    <input
+                                        aria-label="Atur kecepatan marquee"
+                                        className="w-full accent-green-500"
+                                        type="range"
+                                        min="1"
+                                        max="10"
+                                        step="1"
+                                        value={marqueeSpeed}
+                                        onChange={(event) => setMarqueeSpeed(Number(event.target.value))}
+                                    />
+                                    <span className="shrink-0">10</span>
+                                </label>
+                                <div className="overflow-hidden rounded bg-[#0f1117] p-2">
+                                <marquee behavior="scroll" direction="left" scrollamount={marqueeSpeed}>
+                                    [SYSTEM ALERT]........ALO GAES, INI TEKS BERJALAN BTW :v........
+                                </marquee>
+                                </div>
+                            </div>
+                        );
+                    case 20:
+                        return (
+                            <div className="w-full space-y-2 rounded bg-gray-900 p-4 text-left font-mono text-sm text-green-300">
+                                <p>Request → Controller (Servlet)</p>
+                                <p>Controller → Model / DAO</p>
+                                <p>Model → Data diproses</p>
+                                <p>Controller → View (JSP)</p>
+                                <p className="border-t border-gray-700 pt-2 text-cyan-300">Simulasi alur arsitektur MVC Java Web.</p>
+                            </div>
+                        );
+                    case 21:
+                        return (
+                            <div className="w-full rounded bg-gray-900 p-4 text-left font-mono text-sm text-green-300">
+                                <p>Servlet: controller.ActionServlet</p>
+                                <p>URL Mapping: /action/*</p>
+                                <p>Deployment: aplikasi dikemas sebagai file .WAR</p>
+                            </div>
+                        );
+                    default:
+                        return (
+                            <div className="w-full rounded bg-gray-900 p-4 text-left font-mono text-sm text-yellow-300">
+                                Preview belum tersedia untuk materi ini.
+                            </div>
+                        );
+                }
+            };
+
+            return (
+                <div className="flex flex-col min-h-screen">
+                    {/* TOP NAVBAR / HEADER */}
+                    <header className="border-b border-hacker-border bg-hacker-card/80 backdrop-blur sticky top-0 z-50">
+                        <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+                            <div className="flex items-center space-x-3">
+                                <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                                <span className="font-mono text-green-400 font-bold tracking-wider text-lg">Pemrograman Java Web</span>
+                            </div>
+                            <nav className="flex flex-wrap justify-center gap-2">
+                                <button 
+                                    onClick={() => setActiveTab('home')}
+                                    className={`px-4 py-2 rounded text-sm font-mono transition-all ${activeTab === 'home' ? 'bg-green-500 text-black font-bold shadow-[0_0_10px_rgba(0,255,102,0.4)]' : 'bg-hacker-bg border border-hacker-border text-gray-300 hover:border-green-500'}`}
+                                >
+                                    Home
+                                </button>
+                                <button 
+                                    onClick={() => setActiveTab('materials')}
+                                    className={`px-4 py-2 rounded text-sm font-mono transition-all ${activeTab === 'materials' ? 'bg-green-500 text-black font-bold shadow-[0_0_10px_rgba(0,255,102,0.4)]' : 'bg-hacker-bg border border-hacker-border text-gray-300 hover:border-green-500'}`}
+                                >
+                                    Materi
+                                </button>
+                                <button 
+                                    onClick={() => setActiveTab('downloads')}
+                                    className={`px-4 py-2 rounded text-sm font-mono transition-all ${activeTab === 'downloads' ? 'bg-green-500 text-black font-bold shadow-[0_0_10px_rgba(0,255,102,0.4)]' : 'bg-hacker-bg border border-hacker-border text-gray-300 hover:border-green-500'}`}
+                                >
+                                    Download File
+                                </button>
+                            </nav>
+                        </div>
+                    </header>
+
+                    {/* MAIN CONTENT AREA */}
+                    <main className="flex-grow max-w-7xl w-full mx-auto px-4 py-8">
+                        
+                        {/* TAB HOME */}
+                        {activeTab === 'home' && (
+                            <div className="space-y-8 animate-fadeIn">
+                                <div className="border border-green-500/40 bg-hacker-card p-6 md:p-10 rounded-xl glow-box relative overflow-hidden">
+                                    <div className="absolute top-0 right-0 p-4 opacity-10 font-mono text-9xl text-green-500 select-none pointer-events-none">21</div>
+                                    <h1 className="text-2xl md:text-4xl font-bold text-green-400 glow-text mb-4">
+                                        Selamat datang, ini adalah web ringasan materi pemrograman Web dari Pertemuan 1 - Pertemuan 21, selamat belajar!
+                                    </h1>
+                                    <p className="text-gray-300 leading-relaxed mb-6 font-mono text-sm md:text-base">
+                                        Sistem interaktif berbasis terminal cyber ini dirancang khusus untuk merangkum seluruh esensi perkuliahan pemrograman web, mulai dari dasar HTML, CSS, JavaScript sisi klien, PHP sisi server, hingga arsitektur Java Web & JSP.
+                                    </p>
+                                    
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-hacker-border pt-6 mt-6">
+                                        <div className="bg-hacker-bg p-4 rounded border border-hacker-border">
+                                            <span className="text-cyan-400 font-bold block mb-3">&gt; INFORMASI PEMBUAT:</span>
+                                            <div className="flex items-center gap-4">
+                                                <div className="h-20 w-20 shrink-0 rounded-full border-2 border-green-400 p-1 shadow-[0_0_12px_rgba(0,255,102,0.8)]">
+                                                    <img
+                                                        src="Assets/Images/Image.jpg"
+                                                        alt="Foto Herlian Dwi Prianka"
+                                                        className="h-full w-full rounded-full object-cover"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <p className="text-white font-mono text-lg font-semibold">Herlian Dwi Prianka</p>
+                                                    <p className="text-gray-400 font-mono">NIM: <span className="text-green-400 font-bold">251091700200</span></p>
+                                                    <p className="text-gray-400 font-mono">Universitas Pamulang Serang (UNPAM SERANG)</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="bg-hacker-bg p-4 rounded border border-hacker-border flex flex-col justify-center">
+                                            <span className="text-cyan-400 font-bold block mb-2">&gt; QUICK ACTIONS:</span>
+                                            <div className="flex flex-wrap gap-2">
+                                                <button onClick={() => setActiveTab('materials')} className="px-4 py-2 bg-green-500 text-black font-bold text-sm rounded hover:bg-green-400 transition">
+                                                    Jelajahi Materi (1-21)
+                                                </button>
+                                                <button onClick={() => setActiveTab('downloads')} className="px-4 py-2 bg-cyan-500 text-black font-bold text-sm rounded hover:bg-cyan-400 transition">
+                                                    Unduh File Materi
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Terminal Banner Showcase */}
+                                <div className="border border-hacker-border bg-hacker-card rounded-xl p-6 font-mono">
+                                    <div className="flex items-center space-x-2 pb-3 border-b border-hacker-border mb-4">
+                                        <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                                        <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                        <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                                        <span className="text-xs text-gray-400 ml-2">bash - herlian@unpam-serang:~</span>
+                                    </div>
+                                    <div className="space-y-2 text-sm text-gray-300">
+                                        <p><span className="text-green-400">herlian@unpam:~$</span> cat ./readme.txt</p>
+                                        <p className="text-cyan-300 pl-4">{'->'} Tema: Dark Hacker / Cyberpunk Aesthetic.</p>
+                                        <p className="text-cyan-300 pl-4">{'->'} Kompatibilitas: VS Code & Live Server (Full React + Tailwind CDN).</p>
+                                        <p className="text-cyan-300 pl-4">{'->'} Fitur Utama: Penjelasan singkat, Source code dengan tombol copy, simulasi hasil, dan download file per pertemuan.</p>
+                                        <p className="text-green-400">herlian@unpam:~$ <span className="animate-pulse">_</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* TAB MATERIALS (RINGKASAN 1 - 21) */}
+                        {activeTab === 'materials' && (
+                            <div className="space-y-12">
+                                <div className="text-center space-y-2">
+                                    <h2 className="text-3xl font-bold text-green-400 font-mono glow-text">ARSIP MATERI PEMROGRAMAN WEB (1 - 21)</h2>
+                                    <p className="text-gray-400 font-mono text-sm">Dikelompokkan secara terstruktur untuk memudahkan proses pembelajaran komprehensif.</p>
+                                </div>
+
+                                {materialGroups.map((groupObj, groupIdx) => (
+                                    <div key={groupIdx} className="space-y-6">
+                                        <div className="border-l-4 border-green-500 pl-4 py-1 bg-hacker-card/50 rounded-r">
+                                            <h3 className="text-xl font-bold text-cyan-400 font-mono">{groupObj.group}</h3>
+                                        </div>
+
+                                        <div className="grid grid-cols-1 gap-6">
+                                            {groupObj.items.map((item, itemIdx) => (
+                                                <div key={item.id} className="border border-hacker-border bg-hacker-card rounded-xl p-6 shadow-lg hover:border-green-500/50 transition-all">
+                                                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 mb-4 pb-3 border-b border-hacker-border">
+                                                        <h4 className="text-lg font-bold text-green-400 font-mono flex items-center gap-2">
+                                                            <span className="text-cyan-400">[{item.id}]</span> {item.title}
+                                                        </h4>
+                                                        <button 
+                                                            onClick={() => handleDownload(item.id)}
+                                                            className="px-3 py-1 bg-hacker-bg border border-cyan-500 text-cyan-400 rounded text-xs font-mono hover:bg-cyan-500 hover:text-black transition flex items-center gap-1"
+                                                        >
+                                                            <span>↓ Unduh File Materi #{item.id}</span>
+                                                        </button>
+                                                    </div>
+
+                                                    <p className="text-gray-300 mb-4 text-sm md:text-base leading-relaxed">
+                                                        {item.desc}
+                                                    </p>
+
+                                                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
+                                                        {/* Code Block */}
+                                                        <div className="relative bg-black/80 rounded-lg border border-hacker-border p-4 font-mono text-xs overflow-x-auto">
+                                                            <div className="flex justify-between items-center mb-2 pb-2 border-b border-gray-800">
+                                                                <span className="text-gray-500">Source Code</span>
+                                                                <button 
+                                                                    onClick={() => handleCopy(item.code, `${groupIdx}-${itemIdx}`)}
+                                                                    className="px-2 py-1 bg-green-500/20 text-green-400 hover:bg-green-500 hover:text-black rounded transition text-xs"
+                                                                >
+                                                                    {copiedIndex === `${groupIdx}-${itemIdx}` ? 'Berhasil Disalin!' : 'Salin Kode'}
+                                                                </button>
+                                                            </div>
+                                                            <pre className="text-green-300 whitespace-pre-wrap">{item.code}</pre>
+                                                        </div>
+
+                                                        {/* Simulation Result Block */}
+                                                        <div className="bg-hacker-bg rounded-lg border border-hacker-border p-4 flex flex-col">
+                                                            <div className="flex justify-between items-center mb-2 pb-2 border-b border-hacker-border">
+                                                                <span className="text-gray-400 font-mono text-xs">Simulasi / Preview Hasil</span>
+                                                                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                                                            </div>
+                                                            <div data-simulation-preview className="flex-grow bg-[#0f1117] border border-gray-800 rounded p-4 flex items-center justify-center text-center font-mono text-sm">
+                                                                {renderSimulation(item)}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
+                        {/* TAB DOWNLOAD CENTER */}
+                        {activeTab === 'downloads' && (
+                            <div className="space-y-6">
+                                <div className="border border-green-500/40 bg-hacker-card p-6 rounded-xl">
+                                    <h2 className="text-2xl font-bold text-green-400 font-mono mb-2">Pusat Unduhan Materi (Pertemuan 1 - 21)</h2>
+                                    <p className="text-gray-300 text-sm font-mono mb-6">
+                                        Anda dapat mengunduh file materi untuk setiap pertemuan satu per satu secara terpisah melalui tombol di bawah ini.
+                                    </p>
+
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                                        {Array.from({ length: 21 }, (_, i) => i + 1).map((num) => (
+                                            <div key={num} className="border border-hacker-border bg-hacker-bg p-4 rounded-lg flex flex-col justify-between hover:border-cyan-500 transition">
+                                                <div className="mb-3">
+                                                    <span className="text-xs font-mono text-green-400 block mb-1">Modul Resmi</span>
+                                                    <h4 className="font-bold font-mono text-white text-sm">Pertemuan {num}</h4>
+                                                    <p className="text-xs text-gray-400 mt-1">Materi & Latihan Praktikum Web</p>
+                                                </div>
+                                                <button 
+                                                    onClick={() => handleDownload(num)}
+                                                    className="w-full py-2 bg-green-500 text-black font-bold font-mono rounded text-xs hover:bg-green-400 transition"
+                                                >
+                                                    Unduh Pertemuan {num}
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                    </main>
+
+                    {/* FOOTER */}
+                    <footer className="border-t border-hacker-border bg-hacker-card py-6 mt-12 text-center font-mono text-xs text-gray-400">
+                        <p>© 2026 Herlian Dwi Prianka (NIM: 251091700200) - Universitas Pamulang Serang.</p>
+                        <p className="mt-1 text-green-500">Web Interaktif & Responsif Tema Gelap Ala Hacker (HTML5, Tailwind CSS, React JS).</p>
+                    </footer>
+                </div>
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
+</body>
+</html>
