@@ -140,7 +140,7 @@
                             id: 10,
                             title: "Pertemuan 10: Membuat Desain Web Responsif dengan Media Queries",
                             desc: "Menerapkan pendekatan Responsive Web Design agar tampilan optimal di berbagai perangkat (desktop, tablet, mobile) menggunakan teknik CSS Flexbox/Grid dan @media screen rules.",
-                            code: `<style>\n  .container { display: flex; flex-wrap: wrap; }\n  .col { flex: 1; min-width: 250px; background: #121318; padding: 15px; margin: 5px; }\n  @media (max-width: 768px) {\n    .container { flex-direction: column; }\n  }\n</style>\n<div class=\"container\">\n  <div class=\"col\">Kolom 1</div>\n  <div class=\"col\">Kolom 2</div>\n</div>`,
+                            code: `<style>\n  .container {\n    display: grid;\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n    gap: 12px;\n  }\n  .col {\n    min-width: 0;\n    padding: 16px;\n    color: #c9d1d9;\n    background: #121318;\n    border: 1px solid #1f293d;\n    border-radius: 8px;\n  }\n  .col strong {\n    display: block;\n    margin-bottom: 8px;\n    color: #00f0ff;\n  }\n  .col p { margin: 0; }\n  @media (max-width: 640px) {\n    .container { grid-template-columns: 1fr; }\n  }\n</style>\n<div class=\"container\">\n  <div class=\"col\">\n    <strong>Kolom 1</strong>\n    <p>Tampil berdampingan pada layar lebar.</p>\n  </div>\n  <div class=\"col\">\n    <strong>Kolom 2</strong>\n    <p>Berpindah ke baris berikutnya pada layar sempit.</p>\n  </div>\n</div>`,
                             simulationType: "html"
                         }
                     ]
@@ -357,9 +357,15 @@
                         );
                     case 10:
                         return (
-                            <div className="flex w-full flex-wrap gap-2 text-left text-white">
-                                <div className="min-w-[150px] flex-1 rounded bg-hacker-card p-4">Kolom 1</div>
-                                <div className="min-w-[150px] flex-1 rounded bg-hacker-card p-4">Kolom 2</div>
+                            <div className="grid w-full grid-cols-1 gap-3 text-left text-gray-200 sm:grid-cols-2">
+                                <div className="min-w-0 rounded-lg border border-cyan-500/60 bg-hacker-card p-4 shadow-[0_0_12px_rgba(0,240,255,0.12)]">
+                                    <strong className="mb-2 block text-xs tracking-wider text-cyan-300">Kolom 1</strong>
+                                    <p className="text-sm leading-relaxed">Tampil berdampingan pada layar lebar.</p>
+                                </div>
+                                <div className="min-w-0 rounded-lg border border-green-500/60 bg-hacker-card p-4 shadow-[0_0_12px_rgba(0,255,102,0.12)]">
+                                    <strong className="mb-2 block text-xs tracking-wider text-cyan-300">Kolom 2</strong>
+                                    <p className="text-sm leading-relaxed">Berpindah ke baris berikutnya pada layar sempit.</p>
+                                </div>
                             </div>
                         );
                     case 11:
