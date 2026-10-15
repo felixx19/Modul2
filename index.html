@@ -28,7 +28,7 @@
             }
         }
     </script>
-    <!-- React & Babel CDN -->
+    <!-- React Js & Babel CDN -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -38,6 +38,52 @@
         body { background-color: #0a0a0c; color: #c9d1d9; font-family: 'Courier New', Courier, monospace; }
         .glow-text { text-shadow: 0 0 10px rgba(0, 255, 102, 0.5); }
         .glow-box { box-shadow: 0 0 15px rgba(0, 240, 255, 0.1); }
+        @keyframes welcome-word-entry {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .welcome-word-entry { animation: welcome-word-entry 300ms ease-out both; }
+        @keyframes dock-roll-up {
+            0% {
+                opacity: 0;
+                transform: perspective(1000px) rotateX(-70deg) translateY(80px) scale(0.86);
+            }
+            72% {
+                opacity: 1;
+                transform: perspective(1000px) rotateX(7deg) translateY(-8px) scale(1.02);
+            }
+            100% {
+                opacity: 1;
+                transform: perspective(1000px) rotateX(0) translateY(0) scale(1);
+            }
+        }
+        .scroll-reveal {
+            opacity: 0;
+            transform: perspective(1000px) rotateX(-70deg) translateY(80px) scale(0.86);
+            transform-origin: center bottom;
+            backface-visibility: hidden;
+        }
+        .scroll-reveal.is-visible {
+            opacity: 1;
+            animation: dock-roll-up 850ms cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+        .material-card-bubble {
+            transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(0) scale(1);
+            transform-style: preserve-3d;
+            transition: transform 180ms ease-out, border-color 350ms ease, box-shadow 350ms ease;
+        }
+        .material-card-bubble:hover {
+            transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(-7px) scale(1.035);
+            border-color: rgba(0, 255, 102, 0.6);
+            box-shadow: 0 18px 36px rgba(0, 255, 102, 0.14), 0 0 20px rgba(0, 240, 255, 0.08);
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .scroll-reveal {
+                opacity: 1;
+                transform: none;
+                animation: none;
+            }
+        }
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #0a0a0c; }
         ::-webkit-scrollbar-thumb { background: #1f293d; border-radius: 4px; }
@@ -50,20 +96,123 @@
     <script type="text/babel">
         const { useState, useEffect } = React;
 
+        const welcomeMessages = [
+            "Selamat Datang Di Web Modul Pemrograman Java Web, Selamat Belajar ^o^"
+        ];
+        const welcomeScrambleCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        const welcomeWordStagger = 4;
+        const welcomeWordScrambleDuration = 7;
+
+        const scrambleWelcomeWord = (word) => word.replace(/[A-Za-z0-9]/g, () =>
+            welcomeScrambleCharacters[Math.floor(Math.random() * welcomeScrambleCharacters.length)]
+        );
+
+        const materialFiles = {
+            1: "Pertemuan 1 Java Web.pptx",
+            2: "Pertemuan 2 - Java Web.pdf",
+            3: "Pertemuan 3 - Java Web.pdf",
+            4: "Pertemuan 4 - Java Web.pdf",
+            5: "Pertemuan 5 - Java Web.pptx",
+            6: "Pertemuan 6 - Java Web.pdf",
+            7: "Pertemuan 7 - Java Web.pptx",
+            8: "Pertemuan 8 - Java Web.pptx",
+            9: "Pertemuan 9 - Java Web.pptx",
+            10: "Pertemuan 10 - Java Web.pptx",
+            11: "Pertemuan 11- Java Web.pptx",
+            12: "Pertemuan 12 - java web.pptx",
+            13: "Pertemuan 13 - Java Web.pptx",
+            14: "Pertemuan 14 - Java Web.pptx",
+            15: "Pertemuan 15 - Java Web.pptx",
+            16: "Pertemuan 16 - Java Web.pptx",
+            17: "pertemuan 17 - java web fix.pptx",
+            18: "Pertemuan 18 Java Web.pptx",
+            19: "Pertemuan 19 - Java Web.pptx",
+            20: "Pertemuan 20 - Java Web.pptx",
+            21: "Pertemuan 21 - java Web.pptx"
+        };
+
+        const terminalOutput = [
+            { text: "Website ini dibuat semalaman suntuk pada bagian Front End O,,O ." },
+            { text: "Website mengandung tema : Terminal/Command Prompt, Dark Green ala-ala Hacker :v", prefix: true },
+            { text: "", spacer: true },
+            { text: "Styling menggunakan CSS Tailwind via CDN dan Script React Js", prefix: true },
+            { text: "", spacer: true },
+            { text: "Di dalam Web ini terdapat :", prefix: true },
+            { text: "Penjelasan Singkat", prefix: true, nested: true },
+            { text: "Source Code", prefix: true, nested: true },
+            { text: "Simulasi Tampilan Output", prefix: true, nested: true },
+            { text: "Materi lengkap dari Pertemuan 1 - Pertemuan 21", prefix: true, nested: true }
+        ];
+        const terminalCompleteProgress = 4 + terminalOutput.length * 5;
+
         function App() {
             const [activeTab, setActiveTab] = useState('home');
+            const [welcomeMessage] = useState(() => welcomeMessages[Math.floor(Math.random() * welcomeMessages.length)]);
+            const [welcomeProgress, setWelcomeProgress] = useState(0);
             const [copiedIndex, setCopiedIndex] = useState(null);
             const [simInput, setSimInput] = useState({ name: 'Herlian Dwi Prianka', score: '85', choice: 'Jakarta' });
             const [simResult, setSimResult] = useState({});
             const [currentTime, setCurrentTime] = useState(new Date());
             const [marqueeSpeed, setMarqueeSpeed] = useState(5);
+            const [terminalProgress, setTerminalProgress] = useState(0);
+            const renderTerminalLine = (line, index) => (
+                <p
+                    key={index}
+                    className={`${line.prefix ? 'text-cyan-300' : ''} ${line.nested ? 'pl-8' : line.prefix ? 'pl-4' : ''} break-words`}
+                >
+                    {line.prefix && '-> '}{line.text || '\u00a0'}
+                </p>
+            );
+
+            useEffect(() => {
+                const wordCount = welcomeMessage.split(' ').length;
+                const completeProgress = (wordCount - 1) * welcomeWordStagger + welcomeWordScrambleDuration;
+                let progress = 0;
+                const timer = setInterval(() => {
+                    progress += 1;
+                    setWelcomeProgress(progress);
+                    if (progress >= completeProgress) clearInterval(timer);
+                }, 65);
+                return () => clearInterval(timer);
+            }, []);
 
             useEffect(() => {
                 const timer = setInterval(() => setCurrentTime(new Date()), 1000);
                 return () => clearInterval(timer);
             }, []);
 
-            // Data Materi 1 - 21 yang dikelompokkan per blok
+            useEffect(() => {
+                let progress = 0;
+                const timer = setInterval(() => {
+                    progress += 1;
+                    setTerminalProgress(progress);
+                    if (progress >= terminalCompleteProgress) clearInterval(timer);
+                }, 80);
+                return () => clearInterval(timer);
+            }, []);
+
+            useEffect(() => {
+                if (activeTab !== 'materials') return;
+
+                const elements = document.querySelectorAll('[data-scroll-reveal]');
+                if (!('IntersectionObserver' in window)) {
+                    elements.forEach((element) => element.classList.add('is-visible'));
+                    return;
+                }
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach((entry) => {
+                        if (!entry.isIntersecting) return;
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    });
+                }, { threshold: 0.08 });
+
+                elements.forEach((element) => observer.observe(element));
+                return () => observer.disconnect();
+            }, [activeTab]);
+
+            // Rangkuman Materi dari Pertemuan 1 - 21
             const materialGroups = [
                 {
                     group: "Pertemuan 1 - 5: Konsep Dasar, HTML, PHP Dasar & Operator",
@@ -240,21 +389,6 @@
                 setTimeout(() => setCopiedIndex(null), 2000);
             };
 
-            const handleDownload = (pertNum) => {
-                const materialTitle = `Materi_Pertemuan_${pertNum}_Herlian_UNPAM.txt`;
-                const content = `RINGKASAN MATERI PEMROGRAMAN WEB\nUNIVERSITAS PAMULANG SERANG\nNama Pembuat: Herlian Dwi Prianka (NIM: 251091700200)\n---------------------------------------------------\nFile Dokumen / Modul Resmi untuk Pertemuan ${pertNum}.\nSimpan file ini sebagai referensi belajar mandiri.`;
-                
-                const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = materialTitle;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                URL.revokeObjectURL(url);
-            };
-
             const renderSimulation = (item) => {
                 switch (item.id) {
                     case 1:
@@ -271,17 +405,17 @@
                     case 2:
                         return (
                             <div className="w-full overflow-x-auto rounded bg-white p-4 text-left text-gray-900">
-                                <table className="w-full border-collapse text-sm">
+                                <table className="w-full table-fixed border-collapse text-sm">
                                     <thead>
                                         <tr>
-                                            <th className="border border-gray-500 p-2">NIM</th>
-                                            <th className="border border-gray-500 p-2">Nama</th>
+                                            <th className="break-words border border-gray-500 p-2">NIM</th>
+                                            <th className="break-words border border-gray-500 p-2">Nama</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td className="border border-gray-500 p-2">251091700200</td>
-                                            <td className="border border-gray-500 p-2">Herlian Dwi Prianka</td>
+                                            <td className="break-all border border-gray-500 p-2">251091700200</td>
+                                            <td className="break-words border border-gray-500 p-2">Herlian Dwi Prianka</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -528,40 +662,42 @@
                             <div className="space-y-8 animate-fadeIn">
                                 <div className="border border-green-500/40 bg-hacker-card p-6 md:p-10 rounded-xl glow-box relative overflow-hidden">
                                     <div className="absolute top-0 right-0 p-4 opacity-10 font-mono text-9xl text-green-500 select-none pointer-events-none">21</div>
-                                    <h1 className="text-2xl md:text-4xl font-bold text-green-400 glow-text mb-4">
-                                        Selamat datang, ini adalah web ringasan materi pemrograman Web dari Pertemuan 1 - Pertemuan 21, selamat belajar!
+                                    <h1 aria-label={welcomeMessage} className="relative text-2xl md:text-4xl font-bold text-green-400 glow-text mb-4">
+                                        <span className="invisible" aria-hidden="true">{welcomeMessage}</span>
+                                        <span className="absolute inset-0" aria-hidden="true">
+                                            {welcomeMessage.split(' ').map((word, index) => {
+                                                const wordProgress = welcomeProgress - index * welcomeWordStagger;
+                                                if (wordProgress < 0) return <React.Fragment key={index}>{index > 0 ? ' ' : ''}</React.Fragment>;
+                                                const visibleWord = wordProgress < welcomeWordScrambleDuration ? scrambleWelcomeWord(word) : word;
+                                                return (
+                                                    <React.Fragment key={index}>
+                                                        {index > 0 ? ' ' : ''}
+                                                        <span className={wordProgress < welcomeWordScrambleDuration ? 'welcome-word-entry' : ''}>{visibleWord}</span>
+                                                    </React.Fragment>
+                                                );
+                                            })}
+                                        </span>
                                     </h1>
                                     <p className="text-gray-300 leading-relaxed mb-6 font-mono text-sm md:text-base">
-                                        Sistem interaktif berbasis terminal cyber ini dirancang khusus untuk merangkum seluruh esensi perkuliahan pemrograman web, mulai dari dasar HTML, CSS, JavaScript sisi klien, PHP sisi server, hingga arsitektur Java Web & JSP.
+                                        Ini adalah website interaktif rangkuman Pemrograman Java Web dari pertemuan 1 - pertemuan 21.
                                     </p>
                                     
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-hacker-border pt-6 mt-6">
-                                        <div className="bg-hacker-bg p-4 rounded border border-hacker-border">
-                                            <span className="text-cyan-400 font-bold block mb-3">&gt; INFORMASI PEMBUAT:</span>
-                                            <div className="flex items-center gap-4">
-                                                <div className="h-20 w-20 shrink-0 rounded-full border-2 border-green-400 p-1 shadow-[0_0_12px_rgba(0,255,102,0.8)]">
+                                    <div className="grid grid-cols-1 gap-4 border-t border-hacker-border pt-6 mt-6">
+                                        <div className="rounded-lg border border-hacker-border bg-hacker-bg p-5 sm:p-6 md:p-8">
+                                            <span className="mb-5 block text-center font-bold text-cyan-400 sm:text-left md:mb-6 md:text-lg">&gt; INFORMASI PEMBUAT:</span>
+                                            <div className="flex min-w-0 flex-col items-center gap-5 text-center sm:flex-row sm:gap-7 sm:text-left md:gap-9">
+                                                <div className="h-28 w-28 shrink-0 rounded-full border-2 border-green-400 p-1 shadow-[0_0_16px_rgba(0,255,102,0.8)] sm:h-36 sm:w-36 md:h-40 md:w-40">
                                                     <img
                                                         src="Assets/Images/Image.jpg"
                                                         alt="Foto Herlian Dwi Prianka"
                                                         className="h-full w-full rounded-full object-cover"
                                                     />
                                                 </div>
-                                                <div>
-                                                    <p className="text-white font-mono text-lg font-semibold">Herlian Dwi Prianka</p>
-                                                    <p className="text-gray-400 font-mono">NIM: <span className="text-green-400 font-bold">251091700200</span></p>
-                                                    <p className="text-gray-400 font-mono">Universitas Pamulang Serang (UNPAM SERANG)</p>
+                                                <div className="min-w-0">
+                                                    <p className="break-words font-mono text-xl font-semibold text-white sm:text-2xl md:text-3xl">Herlian Dwi Prianka</p>
+                                                    <p className="mt-2 break-words font-mono text-sm text-gray-400 sm:text-base md:text-lg">NIM: <span className="font-bold text-green-400">251091700200</span></p>
+                                                    <p className="mt-1 break-words font-mono text-sm leading-relaxed text-gray-400 sm:text-base md:text-lg">Universitas Pamulang Serang (UNPAM SERANG)</p>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div className="bg-hacker-bg p-4 rounded border border-hacker-border flex flex-col justify-center">
-                                            <span className="text-cyan-400 font-bold block mb-2">&gt; QUICK ACTIONS:</span>
-                                            <div className="flex flex-wrap gap-2">
-                                                <button onClick={() => setActiveTab('materials')} className="px-4 py-2 bg-green-500 text-black font-bold text-sm rounded hover:bg-green-400 transition">
-                                                    Jelajahi Materi (1-21)
-                                                </button>
-                                                <button onClick={() => setActiveTab('downloads')} className="px-4 py-2 bg-cyan-500 text-black font-bold text-sm rounded hover:bg-cyan-400 transition">
-                                                    Unduh File Materi
-                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -573,14 +709,19 @@
                                         <div className="w-3 h-3 rounded-full bg-red-500"></div>
                                         <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
                                         <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                                        <span className="text-xs text-gray-400 ml-2">bash - herlian@unpam-serang:~</span>
+                                        <span className="text-xs text-gray-400 ml-2">Herlian Dwi Prianka</span>
                                     </div>
-                                    <div className="space-y-2 text-sm text-gray-300">
-                                        <p><span className="text-green-400">herlian@unpam:~$</span> cat ./readme.txt</p>
-                                        <p className="text-cyan-300 pl-4">{'->'} Tema: Dark Hacker / Cyberpunk Aesthetic.</p>
-                                        <p className="text-cyan-300 pl-4">{'->'} Kompatibilitas: VS Code & Live Server (Full React + Tailwind CDN).</p>
-                                        <p className="text-cyan-300 pl-4">{'->'} Fitur Utama: Penjelasan singkat, Source code dengan tombol copy, simulasi hasil, dan download file per pertemuan.</p>
-                                        <p className="text-green-400">herlian@unpam:~$ <span className="animate-pulse">_</span></p>
+                                    <div className="relative text-sm text-gray-300" aria-label="Animasi terminal command prompt">
+                                        <div className="invisible space-y-2" aria-hidden="true">
+                                            {terminalOutput.map(renderTerminalLine)}
+                                            <p className="text-green-400">herlian@unpam:~$ <span>█</span></p>
+                                        </div>
+                                        <div className="absolute inset-0 space-y-2" aria-hidden="true">
+                                            {terminalOutput.slice(0, Math.max(0, Math.min(terminalOutput.length, Math.floor((terminalProgress - 4) / 5) + 1))).map(renderTerminalLine)}
+                                            {terminalProgress >= terminalCompleteProgress && (
+                                                <p className="text-green-400">herlian@unpam:~$ <span className="animate-pulse">█</span></p>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -589,61 +730,77 @@
                         {/* TAB MATERIALS (RINGKASAN 1 - 21) */}
                         {activeTab === 'materials' && (
                             <div className="space-y-12">
-                                <div className="text-center space-y-2">
-                                    <h2 className="text-3xl font-bold text-green-400 font-mono glow-text">ARSIP MATERI PEMROGRAMAN WEB (1 - 21)</h2>
+                                <div data-scroll-reveal className="scroll-reveal text-center space-y-2">
+                                    <h2 className="break-words text-2xl font-bold text-green-400 font-mono glow-text sm:text-3xl">ARSIP MATERI PEMROGRAMAN WEB (1 - 21)</h2>
                                     <p className="text-gray-400 font-mono text-sm">Dikelompokkan secara terstruktur untuk memudahkan proses pembelajaran komprehensif.</p>
                                 </div>
 
                                 {materialGroups.map((groupObj, groupIdx) => (
                                     <div key={groupIdx} className="space-y-6">
-                                        <div className="border-l-4 border-green-500 pl-4 py-1 bg-hacker-card/50 rounded-r">
-                                            <h3 className="text-xl font-bold text-cyan-400 font-mono">{groupObj.group}</h3>
+                                        <div data-scroll-reveal className="scroll-reveal border-l-4 border-green-500 pl-4 py-1 bg-hacker-card/50 rounded-r">
+                                            <h3 className="break-words text-xl font-bold text-cyan-400 font-mono">{groupObj.group}</h3>
                                         </div>
 
                                         <div className="grid grid-cols-1 gap-6">
                                             {groupObj.items.map((item, itemIdx) => (
-                                                <div key={item.id} className="border border-hacker-border bg-hacker-card rounded-xl p-6 shadow-lg hover:border-green-500/50 transition-all">
-                                                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 mb-4 pb-3 border-b border-hacker-border">
-                                                        <h4 className="text-lg font-bold text-green-400 font-mono flex items-center gap-2">
-                                                            <span className="text-cyan-400">[{item.id}]</span> {item.title}
+                                                <div key={item.id} data-scroll-reveal className="scroll-reveal min-w-0">
+                                                    <div
+                                                        className="material-card-bubble min-w-0 border border-hacker-border bg-hacker-card rounded-xl p-6 shadow-lg"
+                                                        onMouseMove={(event) => {
+                                                            const bounds = event.currentTarget.getBoundingClientRect();
+                                                            const horizontal = (event.clientX - bounds.left) / bounds.width - 0.5;
+                                                            const vertical = (event.clientY - bounds.top) / bounds.height - 0.5;
+                                                            event.currentTarget.style.setProperty('--tilt-x', `${-vertical * 10}deg`);
+                                                            event.currentTarget.style.setProperty('--tilt-y', `${horizontal * 10}deg`);
+                                                        }}
+                                                        onMouseLeave={(event) => {
+                                                            event.currentTarget.style.setProperty('--tilt-x', '0deg');
+                                                            event.currentTarget.style.setProperty('--tilt-y', '0deg');
+                                                        }}
+                                                    >
+                                                    <div className="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-3 mb-4 pb-3 border-b border-hacker-border">
+                                                        <h4 className="w-full min-w-0 break-words text-lg font-bold text-green-400 font-mono flex items-start gap-2 xl:w-auto">
+                                                            <span className="shrink-0 text-cyan-400">[{item.id}]</span>
+                                                            <span className="min-w-0 break-words">{item.title}</span>
                                                         </h4>
-                                                        <button 
+                                                        <button
                                                             onClick={() => handleDownload(item.id)}
-                                                            className="px-3 py-1 bg-hacker-bg border border-cyan-500 text-cyan-400 rounded text-xs font-mono hover:bg-cyan-500 hover:text-black transition flex items-center gap-1"
+                                                            className="max-w-full break-words whitespace-normal xl:shrink-0 xl:whitespace-nowrap px-3 py-1 bg-hacker-bg border border-cyan-500 text-cyan-400 rounded text-xs font-mono hover:bg-cyan-500 hover:text-black transition flex items-center gap-1"
                                                         >
-                                                            <span>↓ Unduh File Materi #{item.id}</span>
+                                                            <span className="min-w-0 break-words">↓ Unduh File Materi #{item.id}</span>
                                                         </button>
                                                     </div>
 
-                                                    <p className="text-gray-300 mb-4 text-sm md:text-base leading-relaxed">
+                                                    <p className="break-words text-gray-300 mb-4 text-sm md:text-base leading-relaxed">
                                                         {item.desc}
                                                     </p>
 
                                                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
                                                         {/* Code Block */}
-                                                        <div className="relative bg-black/80 rounded-lg border border-hacker-border p-4 font-mono text-xs overflow-x-auto">
+                                                        <div className="min-w-0 relative bg-black/80 rounded-lg border border-hacker-border p-4 font-mono text-xs overflow-x-auto">
                                                             <div className="flex justify-between items-center mb-2 pb-2 border-b border-gray-800">
                                                                 <span className="text-gray-500">Source Code</span>
-                                                                <button 
+                                                                <button
                                                                     onClick={() => handleCopy(item.code, `${groupIdx}-${itemIdx}`)}
-                                                                    className="px-2 py-1 bg-green-500/20 text-green-400 hover:bg-green-500 hover:text-black rounded transition text-xs"
+                                                                    className="shrink-0 whitespace-nowrap px-2 py-1 bg-green-500/20 text-green-400 hover:bg-green-500 hover:text-black rounded transition text-xs"
                                                                 >
                                                                     {copiedIndex === `${groupIdx}-${itemIdx}` ? 'Berhasil Disalin!' : 'Salin Kode'}
                                                                 </button>
                                                             </div>
-                                                            <pre className="text-green-300 whitespace-pre-wrap">{item.code}</pre>
+                                                            <pre className="text-green-300 whitespace-pre-wrap [overflow-wrap:anywhere]">{item.code}</pre>
                                                         </div>
 
                                                         {/* Simulation Result Block */}
-                                                        <div className="bg-hacker-bg rounded-lg border border-hacker-border p-4 flex flex-col">
+                                                        <div className="min-w-0 bg-hacker-bg rounded-lg border border-hacker-border p-4 flex flex-col">
                                                             <div className="flex justify-between items-center mb-2 pb-2 border-b border-hacker-border">
                                                                 <span className="text-gray-400 font-mono text-xs">Simulasi / Preview Hasil</span>
                                                                 <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
                                                             </div>
-                                                            <div data-simulation-preview className="flex-grow bg-[#0f1117] border border-gray-800 rounded p-4 flex items-center justify-center text-center font-mono text-sm">
+                                                            <div data-simulation-preview className="min-w-0 flex-grow bg-[#0f1117] border border-gray-800 rounded p-4 flex items-center justify-center text-center font-mono text-sm">
                                                                 {renderSimulation(item)}
                                                             </div>
                                                         </div>
+                                                    </div>
                                                     </div>
                                                 </div>
                                             ))}
@@ -657,7 +814,7 @@
                         {activeTab === 'downloads' && (
                             <div className="space-y-6">
                                 <div className="border border-green-500/40 bg-hacker-card p-6 rounded-xl">
-                                    <h2 className="text-2xl font-bold text-green-400 font-mono mb-2">Pusat Unduhan Materi (Pertemuan 1 - 21)</h2>
+                                    <h2 className="break-words text-2xl font-bold text-green-400 font-mono mb-2">Pusat Unduhan Materi (Pertemuan 1 - 21)</h2>
                                     <p className="text-gray-300 text-sm font-mono mb-6">
                                         Anda dapat mengunduh file materi untuk setiap pertemuan satu per satu secara terpisah melalui tombol di bawah ini.
                                     </p>
@@ -670,12 +827,13 @@
                                                     <h4 className="font-bold font-mono text-white text-sm">Pertemuan {num}</h4>
                                                     <p className="text-xs text-gray-400 mt-1">Materi & Latihan Praktikum Web</p>
                                                 </div>
-                                                <button 
-                                                    onClick={() => handleDownload(num)}
-                                                    className="w-full py-2 bg-green-500 text-black font-bold font-mono rounded text-xs hover:bg-green-400 transition"
+                                                <a
+                                                    href={`Source/Mentah/${encodeURIComponent(materialFiles[num])}`}
+                                                    download={materialFiles[num]}
+                                                    className="w-full break-words whitespace-normal sm:whitespace-nowrap py-2 bg-green-500 text-black font-bold font-mono rounded text-xs hover:bg-green-400 transition"
                                                 >
                                                     Unduh Pertemuan {num}
-                                                </button>
+                                                </a>
                                             </div>
                                         ))}
                                     </div>
@@ -686,10 +844,6 @@
                     </main>
 
                     {/* FOOTER */}
-                    <footer className="border-t border-hacker-border bg-hacker-card py-6 mt-12 text-center font-mono text-xs text-gray-400">
-                        <p>© 2026 Herlian Dwi Prianka (NIM: 251091700200) - Universitas Pamulang Serang.</p>
-                        <p className="mt-1 text-green-500">Web Interaktif & Responsif Tema Gelap Ala Hacker (HTML5, Tailwind CSS, React JS).</p>
-                    </footer>
                 </div>
             );
         }
