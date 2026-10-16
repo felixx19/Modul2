@@ -624,7 +624,7 @@
             };
 
             return (
-                <div className="flex flex-col min-h-screen">
+                <div className={`flex flex-col min-h-screen ${activeTab === 'materials' ? 'overflow-x-clip' : ''}`}>
                     {/* TOP NAVBAR / HEADER */}
                     <header className="border-b border-hacker-border bg-hacker-card/80 backdrop-blur sticky top-0 z-50">
                         <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
@@ -730,7 +730,7 @@
 
                         {/* TAB MATERIALS (RINGKASAN 1 - 21) */}
                         {activeTab === 'materials' && (
-                            <div className="space-y-12 overflow-x-clip">
+                            <div className="space-y-12">
                                 <div data-scroll-reveal className="scroll-reveal text-center space-y-2">
                                     <h2 className="break-words text-2xl font-bold text-green-400 font-mono glow-text sm:text-3xl">ARSIP MATERI PEMROGRAMAN WEB (1 - 21)</h2>
                                     <p className="text-gray-400 font-mono text-sm">Dikelompokkan secara terstruktur untuk memudahkan proses pembelajaran komprehensif.</p>
