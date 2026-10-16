@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+<!DOCTYPE<!DOCTYPE html>
 <html lang="id" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ringkasan Materi Pemrograman Web (Pertemuan 1 - 21)</title>
+    <title>Modul Pemrograman Web</title>
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -36,7 +36,93 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        body { background-color: #0a0a0c; color: #c9d1d9; font-family: 'Courier New', Courier, monospace; }
+        :root {
+            --theme-cursor: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAATYSURBVFhHzZR5UJRlHMcfRjRmmJoa0nGasZFqqqlpOkizrDCbNDtG08LGaaQGWBa8OFe8QBQFBUQJUVO55fTiUFzzKK3UPFEZOZe9Ze9dV2h3kffbvO8+u+Cr2SLC+J15/tj3ffb3+zzf7+99CHlshPApBGGr+Y+HTxyAAIQRnCSIHMt/PfRyAUAALyZMw/0eVlGAD5g0jGQiGCfMcEZCAVb1HEC+/RTG9S7l3Bi+SCjAMsdenOhuxP7u8wjsSXdG0jsckVAAkb0S4q4GHLJeRvWtCxD8UwhvJsLpxpBGQgFibOWotV7CgVvnUWU5hzLzX0ix1GDsnbghjoQCLLGVYr/lb1SYz2KP6U8UGk9jt+E3ZBnqEWBLGcJIKMCC7hKUm8+gxPQHCgynsEt/Ett0x5CjPYrNmnrMseTAmxHSSAQJ/DIPLwog7CpEkfE08gy/4xf9CeTqfkW2VoxNnYeRfrMWqepqRGoL4OeIppGE1RMEP80vN3BRgNDb+ZzlO3THsVV7FFs0R5DZeQgbbtZgnfogkpX7sEpRhWhlMV7tWtkXCRM6iV9yYKIAP1l3c5b/rBUjS1OPjM46pKmrkaI6gCTlXqxQVGKpvAyx0j1Y0lGMQF0aRjySSCjAfOtOZGuOcJZvvFmL9epqrFHtR6KyCsvlFRDJShEjLcHijiJEtOcjrG0XZso24yn74kFGQgHmWbb3Wa46iNXKfVipqESCvBxxslJESYuxUFIIYXseQlt34seWHfihORezW7ZgnCXeCfFQkVCAueZcbtDWui2v6Gd5ESIlBQiS5WCGMhPTFBn4VL4Rn8jS8LF0PSZLU/CcOdYVxwAjoQDfmnI4y9lBWyavQLysFNHSEizqKHRb/r7GeR94tDyOhALMMmb3s3wPojqK8ZE+FaGSXQhp3Ynglh34viUHI3rDQWwhvWTr5Jb7rrJZUqLLN5PurHrChAr57e4VBfjKmAWRrMw9aBNMa7iTvKdbi/nN2zGvaSuCbmTD35jgPOFs/zOEkLr7Ll/fw6SqrpHIDLXEhP9xgQLM0G9yW/6u0dmcXT49kQhqzsZ3N7bgm8YsBLatc74Tf6EiV9rUxAw8cOl7TvFb3i0K8JkuAwskBQhwNW+da+EshQBvdiZiZuMmfHk9HdOvpeHJ7oUg9pBeUl3RTsyMBzY/SBRgqnYDAozJfc3H+IiJr/dhL2Ow/QlHBD6/vgHTrqZiasM6vKQQOfflzWknylst/JIDEwXws0U5i95ZC665K8/MwCb2+cvqBExpSMGHl5Mx8UoivNhhlM2zkiaVmpjwFr+s56IA3GIEl4mlC+7mz44Rk4bmNi9GaBjlEDKTGpIw8VIi3rm4An5aegPuFkmI2prHL+u5XABsc/a7ZQfH3VzSyp2OEUSxe55XxOLtC8vxxvml8L8e4wQ49rWaaG1dBPDhl/ZMLICrOSsWoH9zbk+wD2HCNN6OcOa1i/F45VwcXjwbg1G3hY9gGBE+/q4biwXo39wl6sJo2SK8cDYao5sXwLs7/BEOo0s6h+Ke5qyoCyPsAmYke3LX3NRMV5DXnzk++GH0RNQFbjVGG7nGroEVrbo2uGH0RJwL4duIo3gCkZv13JXbH0BrM/D/MnRSWXNJUupVsjj+CpGZDERhKScmjOdv+y/9C0UnPuq/F+lyAAAAAElFTkSuQmCC") 3 2, auto;
+        }
+        body {
+            background-color: #121214;
+            background-image: radial-gradient(circle 2px at 20px 8px, #232325 99%, transparent 100%);
+            background-size: 24px 24px;
+            color: #c9d1d9;
+            font-family: 'Courier New', Courier, monospace;
+            cursor: var(--theme-cursor);
+        }
+        a, button, [role="button"], summary,
+        input[type="button"], input[type="submit"], input[type="reset"],
+        input[type="checkbox"], input[type="radio"], input[type="range"],
+        label[for] {
+            cursor: var(--theme-cursor) !important;
+        }
+        input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+        textarea, [contenteditable="true"] {
+            cursor: text !important;
+        }
+        @media (hover: hover) and (pointer: fine) {
+            body, body * { cursor: none !important; }
+            input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+            textarea, [contenteditable="true"] { cursor: none !important; }
+            .custom-cursor {
+                position: fixed;
+                inset: 0 auto auto 0;
+                z-index: 9999;
+                width: 24px;
+                height: 28px;
+                pointer-events: none;
+                opacity: 0;
+                transform: translate3d(-100px, -100px, 0);
+                will-change: transform;
+            }
+            .custom-cursor.is-visible { opacity: 1; }
+            .custom-cursor-art {
+                position: absolute;
+                inset: 0;
+                transform-origin: 2px 1px;
+                animation: cursor-idle-bob 1.5s ease-in-out infinite;
+                will-change: transform;
+            }
+            .custom-cursor.is-interactive .custom-cursor-art {
+                animation: cursor-hover-tilt 420ms ease-in-out infinite alternate;
+            }
+            .custom-cursor svg {
+                display: block;
+                overflow: visible;
+                filter: drop-shadow(2px 3px 2px rgba(0, 0, 0, 0.65)) drop-shadow(0 0 3px rgba(0, 255, 102, 0.5));
+            }
+            .custom-cursor-ripple {
+                position: absolute;
+                top: 1px;
+                left: 2px;
+                width: 6px;
+                height: 6px;
+                border: 1.5px solid #00f0ff;
+                border-radius: 50%;
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.4);
+            }
+            .custom-cursor.is-clicking .custom-cursor-art {
+                animation: cursor-click-bounce 300ms ease-out;
+            }
+            .custom-cursor.is-clicking .custom-cursor-ripple {
+                animation: cursor-click-ripple 420ms ease-out;
+            }
+        }
+        @keyframes cursor-idle-bob {
+            0%, 100% { transform: perspective(120px) rotateX(0deg) rotateY(-7deg) translateY(0); }
+            50% { transform: perspective(120px) rotateX(10deg) rotateY(7deg) translateY(-3px); }
+        }
+        @keyframes cursor-hover-tilt {
+            from { transform: perspective(120px) rotateX(14deg) rotateY(-16deg) translateY(-1px) scale(1.03); }
+            to { transform: perspective(120px) rotateX(-10deg) rotateY(14deg) translateY(-3px) scale(1.08); }
+        }
+        @keyframes cursor-click-bounce {
+            0% { transform: perspective(120px) rotateX(0) scale(1); }
+            45% { transform: perspective(120px) rotateX(30deg) scale(0.76); }
+            100% { transform: perspective(120px) rotateX(0) scale(1); }
+        }
+        @keyframes cursor-click-ripple {
+            0% { opacity: 0.9; transform: translate(-50%, -50%) scale(0.4); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(4); }
+        }
         .glow-text { text-shadow: 0 0 10px rgba(0, 255, 102, 0.5); }
         .glow-box { box-shadow: 0 0 15px rgba(0, 240, 255, 0.1); }
         @keyframes welcome-word-entry {
@@ -78,11 +164,86 @@
             border-color: rgba(0, 255, 102, 0.6);
             box-shadow: 0 18px 36px rgba(0, 255, 102, 0.14), 0 0 20px rgba(0, 240, 255, 0.08);
         }
+        .download-card {
+            transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+        }
+        .download-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(0, 240, 255, 0.7);
+            box-shadow: 0 12px 24px rgba(0, 240, 255, 0.12), 0 0 18px rgba(0, 255, 102, 0.08);
+        }
+        .download-link {
+            position: relative;
+            z-index: 0;
+            display: block;
+            padding: 2px;
+            border-radius: 6px;
+            isolation: isolate;
+        }
+        @property --download-rgb-angle {
+            syntax: "<angle>";
+            inherits: false;
+            initial-value: 0deg;
+        }
+        .download-link::before {
+            position: absolute;
+            z-index: 1;
+            inset: 0;
+            padding: 2px;
+            border-radius: inherit;
+            background: conic-gradient(
+                from var(--download-rgb-angle),
+                #ff1744 0deg 45deg,
+                #ffea00 45deg 90deg,
+                #00ff66 90deg 135deg,
+                #00f0ff 135deg 180deg,
+                #7c4dff 180deg 225deg,
+                #ff1744 225deg 270deg,
+                #ffea00 270deg 315deg,
+                #00f0ff 315deg 360deg
+            );
+            content: "";
+            opacity: 0;
+            filter:
+                drop-shadow(0 0 3px #ff1744)
+                drop-shadow(0 0 6px #00ff66)
+                drop-shadow(0 0 12px #00f0ff);
+            transition: opacity 180ms ease;
+            mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            mask-composite: exclude;
+        }
+        .download-link:hover::before, .download-link:focus-visible::before {
+            opacity: 1;
+            animation: download-rgb-running 1.4s linear infinite;
+        }
+        .download-link-face {
+            position: relative;
+            z-index: 2;
+            display: block;
+            border-radius: 4px;
+            background: #00ff66;
+            padding: 8px 10px;
+            color: #000;
+            text-align: center;
+            transition: background-color 180ms ease;
+        }
+        .download-link:hover .download-link-face,
+        .download-link:focus-visible .download-link-face {
+            background: #101318;
+            color: #fff;
+        }
+        @keyframes download-rgb-running {
+            to { --download-rgb-angle: 360deg; }
+        }
         @media (prefers-reduced-motion: reduce) {
             .scroll-reveal {
                 opacity: 1;
                 transform: none;
                 animation: none;
+            }
+            .download-card, .download-link::before, .download-link-face {
+                transition: none;
+                animation: none !important;
             }
         }
         ::-webkit-scrollbar { width: 8px; }
@@ -91,7 +252,7 @@
         ::-webkit-scrollbar-thumb:hover { background: #00ff66; }
     </style>
 </head>
-<body class="min-h-screen bg-hacker-bg text-hacker-text selection:bg-green-500 selection:text-black">
+<body class="min-h-screen text-hacker-text selection:bg-green-500 selection:text-black">
     <div id="root"></div>
 
     <script type="text/babel">
@@ -151,9 +312,10 @@
             const [welcomeMessage] = useState(() => welcomeMessages[Math.floor(Math.random() * welcomeMessages.length)]);
             const [welcomeProgress, setWelcomeProgress] = useState(0);
             const [copiedIndex, setCopiedIndex] = useState(null);
-            const [simInput, setSimInput] = useState({ name: 'Herlian Dwi Prianka', score: '85', choice: 'Jakarta' });
+            const [simInput, setSimInput] = useState({ name: '', jsName: '', stringText: 'Herlian Dwi Prianka', score: '88', choice: 'Jakarta' });
             const [simResult, setSimResult] = useState({});
             const [currentTime, setCurrentTime] = useState(new Date());
+            const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
             const [marqueeSpeed, setMarqueeSpeed] = useState(5);
             const [terminalProgress, setTerminalProgress] = useState(0);
             const renderTerminalLine = (line, index) => (
@@ -180,6 +342,12 @@
             useEffect(() => {
                 const timer = setInterval(() => setCurrentTime(new Date()), 1000);
                 return () => clearInterval(timer);
+            }, []);
+
+            useEffect(() => {
+                const updateViewportWidth = () => setViewportWidth(window.innerWidth);
+                window.addEventListener('resize', updateViewportWidth);
+                return () => window.removeEventListener('resize', updateViewportWidth);
             }, []);
 
             useEffect(() => {
@@ -222,6 +390,13 @@
                             id: 1,
                             title: "Pertemuan 1: Konsep Dasar Pemrograman Web",
                             desc: "Mempelajari pengertian website (statis, dinamis, interaktif), istilah dasar internet, WWW, web server (Apache/XAMPP), URL, DNS, protokol HTTP, serta struktur navigasi (Linier, Hirarki, Non-Linier, Campuran).",
+                            code: `<!-- Contoh Struktur Navigasi Hirarki Konseptual -->\n<div class="master-page">\n  <h1>Menu Utama</h1>\n  <nav>\n    <a href="tentang.html">Tentang</a>\n    <a href="mulai.html">Mulai</a>\n    <a href="keluar.html">Keluar</a>\n  </nav>\n</div>`,
+                            simulationType: "html"
+                        },
+                        {
+                            id: 2,
+                            title: "Pertemuan 2: Pengenalan HTML & Tabel",
+                            desc: "Mengenal struktur dasar dokumen HTML (<HTML>, <HEAD>, <TITLE>, <BODY>), penggunaan berbagai format tag teks, heading, paragraf, pembuatan tabel dengan <tr>, <td>, <th>, serta pengaturan rowspwebsite (statis, dinamis, interaktif), istilah dasar internet, WWW, web server (Apache/XAMPP), URL, DNS, protokol HTTP, serta struktur navigasi (Linier, Hirarki, Non-Linier, Campuran).",
                             code: `<!-- Contoh Struktur Navigasi Hirarki Konseptual -->\n<div class="master-page">\n  <h1>Menu Utama</h1>\n  <nav>\n    <a href="tentang.html">Tentang</a>\n    <a href="mulai.html">Mulai</a>\n    <a href="keluar.html">Keluar</a>\n  </nav>\n</div>`,
                             simulationType: "html"
                         },
